@@ -174,7 +174,7 @@ const boostrap = async () => {
 
          const response = await setVariable("MAJOR", new_major)
        
-         if(response.status !=== 204) {
+         if(response.status !== 204) {
             throw new Error("ERROR: Wrong status was returned: " + response.status)
          }
          
