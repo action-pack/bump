@@ -1,6 +1,6 @@
 # Bump version
 [![Build](https://github.com/action-pack/bump/actions/workflows/build.yml/badge.svg)](https://github.com/action-pack/bump/)
-[![Version](https://img.shields.io/github/v/tag/action-pack/bump?label=version&sort=semver&color=066da5)](https://github.com/marketplace/actions/bump-version)
+[![Version](https://img.shields.io/github/v/tag/action-pack/bump?label=version&sort=semver&color=066da5)](https://github.com/marketplace/actions/bump-version-number)
 [![Size](https://img.shields.io/github/size/action-pack/bump/dist/index.js?branch=release/v2.0&label=size&color=066da5)](https://github.com/action-pack/bump/)
 
 Action to bump a version number using repository variables.
