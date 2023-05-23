@@ -126,7 +126,7 @@ const boostrap = async () => {
       old_major = "1"
       const response = await createVariable("MAJOR", old_major)
       
-      if(response.status !=== 201) {
+      if(response.status !== 201) {
           throw new Error("ERROR: Wrong status was returned: " + response.status)
       }
 
@@ -170,7 +170,7 @@ const boostrap = async () => {
          new_major = old_major
       }
 
-      if(old_major !=== new_major) {
+      if(old_major !== new_major) {
 
          const response = await setVariable("MAJOR", new_major)
        
