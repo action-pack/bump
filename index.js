@@ -1,7 +1,6 @@
 const github = require("@actions/github");
 const core = require("@actions/core");
 
-const name = core.getInput("name");
 const token = core.getInput("token");
 
 const { Octokit } = require("@octokit/core");
@@ -57,7 +56,7 @@ function increment(string) {
   return string.replace(/[0-9]/g, '').concat(number);
 }
 
-const createVariable = (data) => {
+const createVariable = (varname, data) => {
 
   let url = 'POST '
   url += get_()
@@ -66,21 +65,21 @@ const createVariable = (data) => {
   return octokit.request(url, {
   owner: owner,
   repo: repository,
-  name: name,
+  name: varname,
   value: data } )
   
 }
 
-const setVariable = (data) => {
+const setVariable = (varname, data) => {
 
   let url = 'PATCH '
   url += get_()
-  url += '/actions/variables/' + name
+  url += '/actions/variables/' + varname
 
   return octokit.request(url, {
   owner: owner,
   repo: repository,
-  name: name,
+  name: varname,
   value: data } )
   
 }
@@ -89,7 +88,7 @@ const getVariable = (varname) => {
 
   let url = 'GET '
   url += get_()
-  url += '/actions/variables/' + name
+  url += '/actions/variables/' + varname
   
   return octokit.request(url, {
   owner: owner,
@@ -101,16 +100,51 @@ const getVariable = (varname) => {
 const boostrap = async () => {
   
   let exists = false
-  let old_value = ""
-
+  let old_minor = ""
+  let new_minor = ""
+  let old_major = ""
+  let new_major = ""
+  
   try {
     
-    const response = await getVariable(name)
+    const response = await getVariable("MAJOR")
   
     exists = (response.status === 200) 
 
     if(exists) {
-      old_value = response.data.value
+      old_major = response.data.value
+    }
+
+  } catch (e) {
+    // Variable does not exist
+  }
+  
+  if(!exists) {
+    
+    try {
+     
+      old_major = "1"
+      const response = await createVariable("MAJOR", old_major)
+      
+      if(response.status !=== 201) {
+          throw new Error("ERROR: Wrong status was returned: " + response.status)
+      }
+
+    }catch (e) {
+      core.setFailed(get_() + ": " + e.message);
+      return null;
+    }
+  
+  }
+
+  try {
+    
+    const response = await getVariable("MINOR")
+  
+    exists = (response.status === 200) 
+
+    if(exists) {
+      old_minor = response.data.value
     }
 
   } catch (e) {
@@ -121,12 +155,36 @@ const boostrap = async () => {
     
     if(exists) {
 
-       let new_value = increment(old_value)
-       const response = await setVariable(new_value)
+      if(old_minor === '0' || old_minor === '00' ) {
+         new_minor = "01"
+      }
+      else {         
+         new_minor = increment(old_minor)
+      }
        
-       if(response.status === 204) {
-          return "Succesfully incremented " + name + " from " + old_value + " to " + new_value + "."
-       }
+      if(new_minor === '100') {
+         new_minor = "0"
+         new_major = increment(old_major)
+      }
+      else {         
+         new_major = old_major
+      }
+
+      if(old_major !=== new_major) {
+
+         const response = await setVariable("MAJOR", new_major)
+       
+         if(response.status !=== 204) {
+            throw new Error("ERROR: Wrong status was returned: " + response.status)
+         }
+         
+      }
+      
+      const response = await setVariable("MINOR", new_minor)
+       
+      if(response.status === 204) {
+         return "Version incremented from v" + old_major + "." + old_minor + " to v" + new_major + "." + new_minor + "."
+      }
       
       throw new Error("ERROR: Wrong status was returned: " + response.status)
       
@@ -134,18 +192,21 @@ const boostrap = async () => {
     else
     {
       
-      const response = await createVariable("1")
+      new_minor = "0"
+      const response = await createVariable("MINOR", new_minor)
       
       if(response.status === 201) {
-          return "Succesfully created variable " + name + " with value 1."
-       }
+          return "Version set to default value of v" + old_major + "." + new_minor
+      }
       
       throw new Error("ERROR: Wrong status was returned: " + response.status)
     }
 
   }catch (e) {
     core.setFailed(get_() + ": " + e.message);
+    return null;
   }
+  
 }
 
 boostrap()
