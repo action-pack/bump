@@ -1,4 +1,4 @@
-name: "Bump version"
+name: "Bump version number"
 author: "action-pack"
 description: "Action to bump a version number using repository variables."
 
