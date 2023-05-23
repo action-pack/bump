@@ -5,6 +5,8 @@
 
 Action to bump a version number using repository variables.
 
+It creates two variables, `vars.MAJOR` and `vars.MINOR` and automaticly increments them each time the action is called.
+
 ## Usage
 
 ```YAML
