@@ -5,7 +5,7 @@
 
 Action to bump a version number using repository variables.
 
-It creates two variables, `vars.MAJOR` and `vars.MINOR` and automaticly increments them each time the action is called.
+It creates two variables, `vars.MAJOR` and `vars.MINOR` and automaticly increments the minor version each time the action is called, and the major version as soon as minor hits 100.
 
 ## Usage
 
