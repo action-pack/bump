@@ -1,14 +1,14 @@
-name: "Increment variable"
+name: "Bump version"
 author: "action-pack"
-description: "Action to increment a repository variable by one. Useful for increasing a version number for example."
+description: "Action to bump a version number using repository variables."
 
 branding:
   icon: "plus"
   color: "gray-dark"
 
 inputs:
-  name:
-    description: Name
+  token:
+    description: Repository access token
     required: true
 
   repository:
@@ -25,10 +25,6 @@ inputs:
     description: Flag for organization
     default: false
     required: false
-
-  token:
-    description: Repository access token
-    required: true
 
 runs:
   using: 'node16'
