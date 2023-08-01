@@ -5,8 +5,8 @@
   "repository": "https://github.com/action-pack/bump",
   "scripts": {
     "lint": "eslint . --fix",
-    "build": "ncc build index.js -m -o dist",
-    "build_stats": "ncc build index.js -m -s --stats-out dist/stats -o dist"
+    "build": "ncc build index.js -o dist",
+    "build_stats": "ncc build index.js -s --stats-out dist/stats -o dist"
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
