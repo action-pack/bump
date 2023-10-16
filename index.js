@@ -20,7 +20,7 @@ function get_() {
 
   if (push_to_org) return "/orgs/" + owner;
   if (repository.includes("/")) return "/repos/" + repository;
-  
+
   return "/repos/" + owner + "/" + repository;
 
 }
@@ -94,27 +94,27 @@ const bootstrap = async () => {
   let new_major = "";
 
   try {
-  
+
     const response = await getVariable("MAJOR");
 
     exists = response.status === 200;
     if (exists) old_major = response.data.value;
-  
+
   } catch (e) {
     // Variable does not exist
   }
 
   if (!exists) {
-  
+
     try {
-    
+
       old_major = "1";
       const response = await createVariable("MAJOR", old_major);
 
       if (response.status !== 201) {
         throw new Error("ERROR: Wrong status was returned: " + response.status);
       }
-    
+
     } catch (e) {
       core.setFailed(get_() + ": " + e.message);
       console.error(e);
@@ -123,20 +123,20 @@ const bootstrap = async () => {
   }
 
   try {
-  
+
     const response = await getVariable("MINOR");
 
     exists = response.status === 200;
     if (exists) old_minor = response.data.value;
-  
+
   } catch (e) {
     // Variable does not exist
   }
 
   try {
-  
+
     if (exists) {
-    
+
       if (old_minor === "0" || old_minor === "00") {
         new_minor = "01";
       } else {
@@ -151,7 +151,7 @@ const bootstrap = async () => {
       }
 
       if (old_major !== new_major) {
-      
+
         const response = await setVariable("MAJOR", new_major);
 
         if (response.status !== 204) {
@@ -166,9 +166,9 @@ const bootstrap = async () => {
       }
 
       throw new Error("ERROR: Wrong status was returned: " + response.status);
-      
+
     } else {
-      
+
       new_minor = "0";
       const response = await createVariable("MINOR", new_minor);
 
@@ -178,7 +178,7 @@ const bootstrap = async () => {
 
       throw new Error("ERROR: Wrong status was returned: " + response.status);
     }
-  
+
   } catch (e) {
     core.setFailed(get_() + ": " + e.message);
     console.error(e);
