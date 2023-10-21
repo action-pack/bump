@@ -1,4 +1,4 @@
-<h1 align="center">Bump version number<br />
+<h1 align="center">Bump version<br />
 <div align="center">
   
   [![Build](https://github.com/action-pack/bump/actions/workflows/build.yml/badge.svg)](https://github.com/action-pack/bump/)
