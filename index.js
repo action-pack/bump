@@ -4,17 +4,9 @@ const github = require("@actions/github");
 const token = core.getInput("token");
 const octokit = github.getOctokit(token);
 
-const context = github.context;
-const repoName = context.payload.repository.name;
-const ownerName = context.payload.repository.owner.login;
-
-let owner = core.getInput("owner");
-if (owner === "" || owner === "false") owner = ownerName;
-
-let repository = core.getInput("repository");
-if (repository === "" || repository === "false") repository = repoName;
-
-const push_to_org = core.getInput("org") !== "" && core.getInput("org") !== "false";
+const push_to_org = (input("org", "") !== "");
+const owner = input("owner", github.context.payload.repository.owner.login);
+const repository = input("repository", github.context.payload.repository.name);
 
 function path_() {
 
@@ -22,6 +14,15 @@ function path_() {
   if (repository.includes("/")) return "/repos/" + repository;
 
   return "/repos/" + owner + "/" + repository;
+
+}
+
+function input(name, def) {
+
+  let inp = core.getInput(name).trim();
+  if (inp === "" || inp.toLowerCase() === "false") return def;
+
+  return inp;
 
 }
 
