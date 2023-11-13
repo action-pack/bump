@@ -111,6 +111,6 @@ jobs:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
       -
         name: Increment version variable
-        uses: action-pack/bump@v2.06
+        uses: action-pack/bump@v2.08
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
