@@ -8,11 +8,11 @@ const context = github.context;
 const repoName = context.payload.repository.name;
 const ownerName = context.payload.repository.owner.login;
 
-let repository = core.getInput("repository");
-if (repository === "false") repository = repoName;
-
 let owner = core.getInput("owner");
-if (owner === "false") owner = ownerName;
+if (owner === "" || owner === "false") owner = ownerName;
+
+let repository = core.getInput("repository");
+if (repository === "" || repository === "false") repository = repoName;
 
 const push_to_org = core.getInput("org") !== "false";
 
@@ -25,20 +25,23 @@ function path_() {
 
 }
 
-function increment(string) {
+function increment(string, amount) {
 
   // Extract string's number
   var number = string.match(/\d+/) === null ? 0 : string.match(/\d+/)[0];
 
   // Store number's length
   var numberLength = number.length;
+  var leadingZeroes = number.startsWith("0");
 
-  // Increment number by 1
-  number = (parseInt(number, 10) + 1).toString();
+  // Increment number by the amount
+  number = (parseInt(number, 10) + parseInt(amount, 10)).toString();
 
   // If there were leading 0s, add them again
-  while (number.length < numberLength) {
-    number = "0" + number;
+  if (leadingZeroes) {
+    while (number.length < numberLength) {
+      number = "0" + number;
+    }
   }
 
   return string.replace(/[0-9]/g, "").concat(number);
@@ -137,12 +140,12 @@ const bootstrap = async () => {
       if (old_minor === "0" || old_minor === "00") {
         new_minor = "01";
       } else {
-        new_minor = increment(old_minor);
+        new_minor = increment(old_minor, "1");
       }
 
       if (new_minor === "100") {
         new_minor = "0";
-        new_major = increment(old_major);
+        new_major = increment(old_major, "1");
       } else {
         new_major = old_major;
       }
