@@ -145,7 +145,7 @@ const bootstrap = async () => {
       }
 
       if (new_minor === "100") {
-        new_minor = "0";
+        new_minor = "00";
         new_major = increment(old_major, "1");
       } else {
         new_major = old_major;
@@ -170,7 +170,7 @@ const bootstrap = async () => {
 
     } else {
 
-      new_minor = "0";
+      new_minor = "00";
       const response = await createVariable("MINOR", new_minor);
 
       if (response.status === 201) {
