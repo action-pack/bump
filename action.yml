@@ -1,6 +1,6 @@
 name: "Bump version number"
 author: "action-pack"
-description: "Action to generate a version number using repository variables."
+description: "Action to generate a version number."
 
 branding:
   icon: "plus"
