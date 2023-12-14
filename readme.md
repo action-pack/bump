@@ -7,16 +7,17 @@
   
 </div></h1>
 
-Action to bump a version number using repository variables.
+Action to generate a version number using repository variables.
 
 It creates two variables, `vars.MAJOR` and `vars.MINOR` and automaticly increments the minor version each time the action is called, and the major version as soon as minor hits 100.
 
 ## Usage
 
 ```YAML
-uses: action-pack/bump@v2
-with:
-  token: ${{ secrets.REPO_ACCESS_TOKEN }}
+- uses: action-pack/bump@v2
+  with:
+    token: ${{ secrets.REPO_ACCESS_TOKEN }}
+- run: echo ${{ vars.MAJOR }}.${{ vars.MINOR }}
 ```
 
 ## Inputs
