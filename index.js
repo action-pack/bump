@@ -57,7 +57,7 @@ const createVariable = (varname, data) => {
     owner: owner,
     repo: repository,
     name: varname,
-    value: data,
+    value: data
   });
 };
 
@@ -70,7 +70,7 @@ const setVariable = (varname, data) => {
     owner: owner,
     repo: repository,
     name: varname,
-    value: data,
+    value: data
   });
 };
 
@@ -82,7 +82,7 @@ const getVariable = (varname) => {
   return octokit.request(url, {
     owner: owner,
     repo: repository,
-    name: varname,
+    name: varname
   });
 };
 
@@ -199,7 +199,7 @@ bootstrap()
       // eslint-disable-next-line no-console
       core.setFailed(err.message);
       console.error(err);
-    },
+    }
   )
   .then(() => {
     process.exit();
