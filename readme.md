@@ -53,3 +53,6 @@ It creates two variables, `vars.MAJOR` and `vars.MINOR` and automaticly incremen
     ```yaml
     token: ${{ secrets.MY_TOKEN }}
     ```
+
+## Stars
+[![Stars](https://starchart.cc/action-pack/bump.svg?variant=adaptive)](https://starchart.cc/action-pack/bump)
