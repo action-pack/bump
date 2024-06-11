@@ -9,18 +9,22 @@
 
 Action to generate a version number using repository variables.
 
-It creates two variables, `vars.MAJOR` and `vars.MINOR` and automaticly increments the minor version each time the action is called, and the major version as soon as minor hits 100.
+## Features ✨
 
-## Usage
+  - Creates two variables, `vars.MAJOR` and `vars.MINOR`
+  - Increments the minor version each time the action is called
+  - Increments the major version as soon as minor hits 100.
 
-```YAML
+## Usage 🚀
+
+```yaml
 - uses: action-pack/bump@v2
   with:
     token: ${{ secrets.REPO_ACCESS_TOKEN }}
 - run: echo ${{ vars.MAJOR }}.${{ vars.MINOR }}
 ```
 
-## Inputs
+## Inputs 📝
 
 ### token
 
@@ -38,7 +42,7 @@ It creates two variables, `vars.MAJOR` and `vars.MINOR` and automaticly incremen
 
 **Optional** `Boolean` Indicates the repo is an [organization](https://docs.github.com/en/github/setting-up-and-managing-organizations-and-teams/about-organizations).
 
-## FAQ
+## FAQ 💬
 
   * ### Why do I get the error '*Resource not accessible by integration*'?
 
@@ -54,5 +58,5 @@ It creates two variables, `vars.MAJOR` and `vars.MINOR` and automaticly incremen
     token: ${{ secrets.MY_TOKEN }}
     ```
 
-## Stars
+## Stars 🌟
 [![Stars](https://starchart.cc/action-pack/bump.svg?variant=adaptive)](https://starchart.cc/action-pack/bump)
