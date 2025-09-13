@@ -49,46 +49,40 @@ function increment(string, amount) {
   return string.replace(/[0-9]/g, "").concat(number);
 }
 
-const createVariable = (varname, data) => {
-
-  if (push_to_org) return createOrgVariable(varname, data);
+const createVariable = (name, data) => {
 
   let url = "POST " + path_();
   url += "/actions/variables";
 
+  if (push_to_org) {
+    return octokit.request(url, {
+      name: name,
+      visibility: visibility,
+      value: data
+    });
+  }
+
   return octokit.request(url, {
-    name: varname,
+    name: name,
     value: data
   });
 };
 
-const createOrgVariable = (varname, data) => {
-
-  let url = "POST " + path_();
-  url += "/actions/variables";
-
-  return octokit.request(url, {
-    name: varname,
-    visibility: visibility,
-    value: data
-  });
-};
-
-const setVariable = (varname, data) => {
+const setVariable = (name, data) => {
 
   let url = "PATCH " + path_();
-  url += "/actions/variables/" + varname;
+  url += "/actions/variables/" + name;
 
   return octokit.request(url, {
-    name: varname,
+    name: name,
     value: data
   });
 };
 
-const getVariable = (varname) => {
+const getVariable = (name) => {
 
   let url = "GET " + path_();
-  url += "/actions/variables/" + varname;
+  url += "/actions/variables/" + name;
 
   return octokit.request(url);
 };
