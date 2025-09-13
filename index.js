@@ -4,6 +4,7 @@ const github = require("@actions/github");
 const token = core.getInput("token");
 const octokit = github.getOctokit(token);
 
+const visibility = "all";
 const push_to_org = (input("org", "") !== "");
 const owner = input("owner", github.context.payload.repository.owner.login);
 const repository = input("repository", github.context.payload.repository.name);
@@ -48,15 +49,16 @@ function increment(string, amount) {
   return string.replace(/[0-9]/g, "").concat(number);
 }
 
-const createVariable = (varname, data) => {
+const createVariable = (data) => {
 
   let url = "POST " + path_();
   url += "/actions/variables";
 
   return octokit.request(url, {
+    name: name,
     owner: owner,
     repo: repository,
-    name: varname,
+    visibility: visibility,
     value: data
   });
 };
@@ -67,9 +69,9 @@ const setVariable = (varname, data) => {
   url += "/actions/variables/" + varname;
 
   return octokit.request(url, {
+    name: varname,
     owner: owner,
     repo: repository,
-    name: varname,
     value: data
   });
 };
@@ -80,9 +82,9 @@ const getVariable = (varname) => {
   url += "/actions/variables/" + varname;
 
   return octokit.request(url, {
+    name: varname,
     owner: owner,
-    repo: repository,
-    name: varname
+    repo: repository
   });
 };
 
