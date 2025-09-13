@@ -49,13 +49,13 @@ function increment(string, amount) {
   return string.replace(/[0-9]/g, "").concat(number);
 }
 
-const createVariable = (data) => {
+const createVariable = (varname, data) => {
 
   let url = "POST " + path_();
   url += "/actions/variables";
 
   return octokit.request(url, {
-    name: name,
+    name: varname,
     owner: owner,
     repo: repository,
     visibility: visibility,
