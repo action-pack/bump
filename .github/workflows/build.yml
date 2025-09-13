@@ -115,7 +115,7 @@ jobs:
           value: 'v${{ vars.MAJOR }}.${{ vars.MINOR }}'
       -
         name: Increment version variable
-        uses: action-pack/bump@v2.13
+        uses: action-pack/bump@v2.14
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
       -
