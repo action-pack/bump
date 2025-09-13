@@ -9,15 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Set variable    
-        uses: action-pack/set-variable@v1
-        with:
-          name: 'TEST'
-          value: '1'
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}    
-      -
-        name: Test increment
+        name: Increase version
         uses: action-pack/bump@v2
         with:
-          name: 'TEST'
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
