@@ -72,7 +72,7 @@ const createOrgVariable = (varname, data) => {
     visibility: visibility,
     value: data
   });
-}, ;
+};
 
 const setVariable = (varname, data) => {
 
