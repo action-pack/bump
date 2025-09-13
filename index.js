@@ -51,6 +51,19 @@ function increment(string, amount) {
 
 const createVariable = (varname, data) => {
 
+  if (push_to_org) return createOrgVariable(varname, data);
+
+  let url = "POST " + path_();
+  url += "/actions/variables";
+
+  return octokit.request(url, {
+    name: varname,
+    value: data
+  });
+};
+
+const createOrgVariable = (varname, data) => {
+
   let url = "POST " + path_();
   url += "/actions/variables";
 
@@ -59,7 +72,7 @@ const createVariable = (varname, data) => {
     visibility: visibility,
     value: data
   });
-};
+}, ;
 
 const setVariable = (varname, data) => {
 
