@@ -69,7 +69,6 @@ const setVariable = (varname, data) => {
   url += "/actions/variables/" + varname;
 
   return octokit.request(url, {
-    name: varname,
     owner: owner,
     repo: repository,
     value: data
@@ -82,7 +81,6 @@ const getVariable = (varname) => {
   url += "/actions/variables/" + varname;
 
   return octokit.request(url, {
-    name: varname,
     owner: owner,
     repo: repository
   });
