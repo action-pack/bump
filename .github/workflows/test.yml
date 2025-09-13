@@ -1,0 +1,23 @@
+name: Test
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set variable    
+        uses: action-pack/set-variable@v1
+        with:
+          name: 'TEST'
+          value: '1'
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}    
+      -
+        name: Test increment
+        uses: action-pack/bump@v2
+        with:
+          name: 'TEST'
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
