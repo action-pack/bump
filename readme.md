@@ -59,4 +59,4 @@ Action to generate a version number using repository variables.
     ```
 
 ## Stars 🌟
-[![Stars](https://starchart.cc/action-pack/bump.svg?variant=adaptive)](https://starchart.cc/action-pack/bump)
+![Stargazers](https://raw.githubusercontent.com/star-stats/stars/refs/heads/data/charts/action-pack-bump.svg)
