@@ -27,24 +27,35 @@ function input(name, def) {
 
 function increment(string, amount) {
 
+  const value = String(string || "");
+  const step = Number.parseInt(amount, 10);
+
+  if (!Number.isInteger(step)) {
+    throw new Error(`Invalid amount '${amount}', expected an integer.`);
+  }
+
   // Extract string's number
-  var number = string.match(/\d+/) === null ? 0 : string.match(/\d+/)[0];
+  var number = value.match(/\d+/) === null ? "" : value.match(/\d+/)[0];
+
+  if (number === "") {
+    throw new Error(`Value '${value}' does not contain a number to increment.`);
+  }
 
   // Store number's length
   var numberLength = number.length;
   var leadingZeroes = number.startsWith("0");
 
   // Increment number by the amount
-  number = (parseInt(number, 10) + parseInt(amount, 10)).toString();
+  number = (Number.parseInt(number, 10) + step).toString();
 
   // If there were leading 0s, add them again
-  if (leadingZeroes) {
+  if (leadingZeroes && !number.startsWith("-")) {
     while (number.length < numberLength) {
       number = "0" + number;
     }
   }
 
-  return string.replace(/[0-9]/g, "").concat(number);
+  return value.replace(/[0-9]/g, "").concat(number);
 }
 
 const createVariable = (name, data) => {
@@ -87,7 +98,8 @@ const getVariable = (name) => {
 
 const bootstrap = async () => {
 
-  let exists = false;
+  let majorExists = false;
+  let minorExists = false;
   let old_minor = "";
   let new_minor = "";
   let old_major = "";
@@ -97,8 +109,8 @@ const bootstrap = async () => {
 
     const response = await getVariable("MAJOR");
 
-    exists = response.status === 200;
-    if (exists) old_major = response.data.value;
+    majorExists = response.status === 200;
+    if (majorExists) old_major = response.data.value;
 
   } catch (e) {
     if (e.status !== 404) {
@@ -108,7 +120,7 @@ const bootstrap = async () => {
     // Variable does not exist
   }
 
-  if (!exists) {
+  if (!majorExists) {
 
     try {
 
@@ -130,8 +142,8 @@ const bootstrap = async () => {
 
     const response = await getVariable("MINOR");
 
-    exists = response.status === 200;
-    if (exists) old_minor = response.data.value;
+    minorExists = response.status === 200;
+    if (minorExists) old_minor = response.data.value;
 
   } catch (e) {
     if (e.status !== 404) {
@@ -143,7 +155,7 @@ const bootstrap = async () => {
 
   try {
 
-    if (exists) {
+    if (minorExists) {
 
       if (old_minor === "0" || old_minor === "00") {
         new_minor = "01";
