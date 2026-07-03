@@ -15,7 +15,6 @@ function path_() {
   if (repository.includes("/")) return "/repos/" + repository;
 
   return "/repos/" + owner + "/" + repository;
-
 }
 
 function input(name, def) {
@@ -24,7 +23,6 @@ function input(name, def) {
   if (inp === "" || inp.toLowerCase() === "false") return def;
 
   return inp;
-
 }
 
 function increment(string, amount) {
@@ -103,6 +101,10 @@ const bootstrap = async () => {
     if (exists) old_major = response.data.value;
 
   } catch (e) {
+    if (e.status !== 404) {
+      throw e;
+    }
+
     // Variable does not exist
   }
 
@@ -132,6 +134,10 @@ const bootstrap = async () => {
     if (exists) old_minor = response.data.value;
 
   } catch (e) {
+    if (e.status !== 404) {
+      throw e;
+    }
+
     // Variable does not exist
   }
 
