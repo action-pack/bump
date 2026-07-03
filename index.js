@@ -30,7 +30,7 @@ function increment(string, amount) {
   const value = String(string || "");
   const step = Number.parseInt(amount, 10);
 
-  if (!Number.isInteger(step)) {
+  if (!Number.isInteger(step) || step.toString() !== String(amount).trim()) {
     throw new Error(`Invalid amount '${amount}', expected an integer.`);
   }
 
@@ -80,7 +80,7 @@ const createVariable = (name, data) => {
 const setVariable = (name, data) => {
 
   let url = "PATCH " + path_();
-  url += "/actions/variables/" + name;
+  url += "/actions/variables/" + encodeURIComponent(name);
 
   return octokit.request(url, {
     name: name,
@@ -91,7 +91,7 @@ const setVariable = (name, data) => {
 const getVariable = (name) => {
 
   let url = "GET " + path_();
-  url += "/actions/variables/" + name;
+  url += "/actions/variables/" + encodeURIComponent(name);
 
   return octokit.request(url);
 };
@@ -107,22 +107,22 @@ const bootstrap = async () => {
 
   try {
 
-    const response = await getVariable("MAJOR");
+    try {
 
-    majorExists = response.status === 200;
-    if (majorExists) old_major = response.data.value;
+      const response = await getVariable("MAJOR");
 
-  } catch (e) {
-    if (e.status !== 404) {
-      throw e;
+      majorExists = response.status === 200;
+      if (majorExists) old_major = response.data.value;
+
+    } catch (e) {
+      if (e.status !== 404) {
+        throw e;
+      }
+
+      // Variable does not exist
     }
 
-    // Variable does not exist
-  }
-
-  if (!majorExists) {
-
-    try {
+    if (!majorExists) {
 
       old_major = "1";
       const response = await createVariable("MAJOR", old_major);
@@ -130,30 +130,22 @@ const bootstrap = async () => {
       if (response.status !== 201) {
         throw new Error("ERROR: Wrong status was returned: " + response.status);
       }
+    }
+
+    try {
+
+      const response = await getVariable("MINOR");
+
+      minorExists = response.status === 200;
+      if (minorExists) old_minor = response.data.value;
 
     } catch (e) {
-      core.setFailed(path_() + ": " + e.message);
-      console.error(e);
-      return null;
+      if (e.status !== 404) {
+        throw e;
+      }
+
+      // Variable does not exist
     }
-  }
-
-  try {
-
-    const response = await getVariable("MINOR");
-
-    minorExists = response.status === 200;
-    if (minorExists) old_minor = response.data.value;
-
-  } catch (e) {
-    if (e.status !== 404) {
-      throw e;
-    }
-
-    // Variable does not exist
-  }
-
-  try {
 
     if (minorExists) {
 
@@ -219,7 +211,4 @@ bootstrap()
       core.setFailed(err.message);
       console.error(err);
     }
-  )
-  .then(() => {
-    process.exit();
-  });
+  );
